@@ -1,7 +1,42 @@
-import { AboutSlint, VerticalBox } from "std-widgets.slint";
+import { AboutSlint, VerticalBox, LineEdit, Button } from "std-widgets.slint";
 
 export component App inherits Window {
+    //might be global variables
+    title: "Maestro";
+    width: 800px;
+    height: 600px;
+
+    in-out property <string> user-message:"";
+    in-out property <string> ai-response:"";
+
+    callback send-message(string);
     VerticalBox {
-        TextInput { }
+        padding: 20px;
+        spacing: 12px;
+
+        Text {
+            text: root.title;
+            font-size: 30px;
+        }
+
+        Text {
+            text: root.ai-response;
+            wrap: word-wrap;
+        }
+
+        LineEdit {
+            text <=> root.ai-response;
+
+            accepted => {
+                root.send-message(root.user-message)
+            }
+        }
+
+        Button {
+            text: "Send";
+            clicked => {
+                root.send-message(root.user-message)
+            }
+        }
     }
 }
