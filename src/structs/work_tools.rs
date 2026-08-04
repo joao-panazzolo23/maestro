@@ -3,6 +3,7 @@ use serde::de::DeserializeOwned;
 use crate::structs::chat_request::ChatRequest;
 
 //TODO: this needs to be dynamically set when configuring LLM definition
+#[derive(Debug, Clone)]
 pub struct WorkTools {
     http_client: reqwest::Client,
     base_url: String,

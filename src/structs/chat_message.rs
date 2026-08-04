@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 #[derive(Debug, Serialize)]
 pub struct ChatMessage {
-    role: String,
-    content: String,
+    pub role: String,
+    pub content: String,
 }

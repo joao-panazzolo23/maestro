@@ -1,4 +1,9 @@
-use crate::structs::work_tools::WorkTools;
+use std::sync::Arc;
+
+use crate::structs::{
+    chat_message::ChatMessage, chat_request::ChatRequest, chat_response::ChatResponse,
+    work_tools::WorkTools,
+};
 
 slint::include_modules!();
 pub mod structs;
@@ -7,41 +12,54 @@ pub mod structs;
 async fn main() -> Result<(), slint::PlatformError> {
     let app = App::new()?;
     //todo: this is supposed to be dinamically set.
-    let work_tools = WorkTools::new("http://localhost:11434/api", "qwen3:8b");
-    start_tutor(&work_tools, &app).await;
+    let wt = Arc::new(WorkTools::new("http://localhost:11434/api", "qwen3:8b"));
+    start_tutor(wt, &app);
+
     app.run()
 }
 
-pub async fn start_tutor(wt: &WorkTools, app: &App) {
-    //seria uma bomba dessas aqui
-    // let weak_app = app.as_weak();
+///ARC = ATOMIC REFERENCE COUNTER (SMART POINTER)
+pub fn start_tutor(wt: Arc<WorkTools>, app: &App) {
+    let weak_app = app.as_weak();
 
-    // tokio::spawn(async move {
-    //     let result = service
-    //         .send_message(message.as_str())
-    //         .await;
+    //slint`s callback is not async. i cant call requests in here.
+    app.on_send_message(move |message| {
+        let wt = Arc::clone(&wt);
+        let weak_app = weak_app.clone();
+        let user_message: String = message.to_string();
 
-    //     let _ = slint::invoke_from_event_loop(
-    //         move || {
-    //             if let Some(app) = weak_app.upgrade() {
-    //                 match result {
-    //                     Ok(response) => {
-    //                         app.set_assistant_message(
-    //                             response.into()
-    //                         );
-    //                     }
+        let request = ChatRequest {
+            model: "qwen3:8b".to_owned(),
 
-    //                     Err(error) => {
-    //                         app.set_assistant_message(
-    //                             format!("Erro: {error}")
-    //                                 .into()
-    //                         );
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     );
-    // });
+            messages: vec![
+                ChatMessage {
+                    role: "system".to_owned(),
+                    content: "You are Maestro, a multilingual language tutor.".to_owned(),
+                },
+                ChatMessage {
+                    role: "user".to_owned(),
+                    content: user_message,
+                },
+            ],
+            stream: false,
+        };
 
-    app.on_send_message(move |message| {});
+        tokio::spawn(async move {
+            let result = wt.send_message::<ChatResponse>(&request).await;
+            // por enquanto, só testa a resposta
+            match result {
+                Ok(response) => {
+                    slint::invoke_from_event_loop(move || {
+                        if let Some(app) = weak_app.upgrade() {
+                            app.set_ai_response(response.message.content.into());
+                        }
+                    });
+                }
+
+                Err(error) => {
+                    eprintln!("Erro ao chamar o Ollama: {error}");
+                }
+            }
+        });
+    })
 }

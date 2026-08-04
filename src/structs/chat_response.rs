@@ -29,11 +29,11 @@ pub struct ChatResponse {
     load_duration: u64,
     prompt_eval_count: u64,
     prompt_eval_duration: u64,
-    message: AiMessage,
+    pub message: AiMessage,
 }
 
 #[derive(Deserialize)]
 pub struct AiMessage {
     role: String,
-    content: String,
+    pub content: String,
 }
