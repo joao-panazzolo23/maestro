@@ -1,3 +1,5 @@
+use serde::de::DeserializeOwned;
+
 use crate::structs::chat_request::ChatRequest;
 
 //TODO: this needs to be dynamically set when configuring LLM definition
@@ -16,11 +18,21 @@ impl WorkTools {
         }
     }
 
-    pub async fn send_message(&self, body: &ChatRequest) -> Result<String, reqwest::Error> {
+    pub async fn send_message<T: DeserializeOwned>(
+        &self,
+        body: &ChatRequest,
+    ) -> Result<T, reqwest::Error> {
         let url = format!("{}/chat", self.base_url);
-        let response = self.http_client.post(url).json(&body).send().await?;
+        let response: T = self
+            .http_client
+            .post(url)
+            .json(body)
+            .send()
+            .await?
+            .error_for_status()?
+            .json()
+            .await?;
 
-        let content = response.text().await?;
-        Ok(content)
+        return Ok(response);
     }
 }
