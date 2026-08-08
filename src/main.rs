@@ -11,7 +11,7 @@ use crate::{
 use std::sync::Arc;
 
 slint::include_modules!();
-
+///TODO: REFACTOR MAIN
 #[tokio::main]
 async fn main() -> Result<(), slint::PlatformError> {
     let app = App::new()?;

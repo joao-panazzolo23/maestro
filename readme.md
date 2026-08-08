@@ -1,7 +1,7 @@
 Project main structure
 
-Clean Architecture + DDD. In this case, Traits are decoupling matters and will be threated like C#/Java Interfaces.
+Clean Architecture + DDD. In this case, Traits are decoupling matters and will be treated like C#/Java Interfaces.
 
 Diesel+Sqlite -> Database
 
-Slint is to generate Desktop UI's
+Slint is being used to generate UIs.

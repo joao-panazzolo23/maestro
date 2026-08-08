@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
-struct ResponseMessage {
+pub struct ResponseMessage {
     content: String,
 }
