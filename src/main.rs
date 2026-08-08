@@ -1,11 +1,11 @@
 use std::sync::Arc;
 
-use crate::structs::{
-    chat_message::ChatMessage, chat_request::ChatRequest, chat_response::ChatResponse,
-    work_tools::WorkTools,
+use crate::{
+    domain::{chat_message::ChatMessage, chat_request::ChatRequest, chat_response::ChatResponse},
+    structs::work_tools::WorkTools,
 };
-
 slint::include_modules!();
+pub mod domain;
 pub mod structs;
 
 #[tokio::main]
@@ -30,7 +30,6 @@ pub fn start_tutor(wt: Arc<WorkTools>, app: &App) {
 
         let request = ChatRequest {
             model: "qwen3:8b".to_owned(),
-
             messages: vec![
                 ChatMessage {
                     role: "system".to_owned(),
@@ -55,7 +54,6 @@ pub fn start_tutor(wt: Arc<WorkTools>, app: &App) {
                         }
                     });
                 }
-
                 Err(error) => {
                     eprintln!("Erro ao chamar o Ollama: {error}");
                 }
