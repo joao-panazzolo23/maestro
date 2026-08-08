@@ -19,21 +19,21 @@ use serde::Deserialize;
 // }
 #[derive(Deserialize)]
 pub struct ChatResponse {
-    model: String,
-    created_at: String, //qq eh datetime aq mds
-    total_duration: u64,
-    done: bool,
-    done_reason: String,
-    eval_count: u64,
-    eval_duration: u64,
-    load_duration: u64,
-    prompt_eval_count: u64,
-    prompt_eval_duration: u64,
+    pub model: String,
+    pub created_at: String, //qq eh datetime aq mds
+    pub total_duration: u64,
+    pub done: bool,
+    pub done_reason: String,
+    pub eval_count: u64,
+    pub eval_duration: u64,
+    pub load_duration: u64,
+    pub prompt_eval_count: u64,
+    pub prompt_eval_duration: u64,
     pub message: AiMessage,
 }
 
 #[derive(Deserialize)]
 pub struct AiMessage {
-    role: String,
+    pub role: String,
     pub content: String,
 }
