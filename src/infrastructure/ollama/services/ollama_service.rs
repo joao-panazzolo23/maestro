@@ -21,9 +21,11 @@ impl OllamaService {
 #[async_trait]
 impl AiService for OllamaService {
     async fn complete(&self, request: ChatRequest) -> Result<ResponseMessage, AiServiceError> {
+        let url = format!("{}/chat", self.base_url.clone());
+
         let response = self
             .client
-            .post(self.base_url.clone())
+            .post(url)
             .json(&request)
             .send()
             .await
