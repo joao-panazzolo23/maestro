@@ -1,12 +1,16 @@
+pub mod application;
+pub mod domain;
+pub mod infrastructure;
+pub mod presentation;
+use crate::{
+    domain::chats::dtos::{
+        chat_message::ChatMessage, chat_request::ChatRequest, chat_response::ChatResponse,
+    },
+    infrastructure::work_tools::WorkTools,
+};
 use std::sync::Arc;
 
-use crate::{
-    domain::{chat_message::ChatMessage, chat_request::ChatRequest, chat_response::ChatResponse},
-    structs::work_tools::WorkTools,
-};
 slint::include_modules!();
-pub mod domain;
-pub mod structs;
 
 #[tokio::main]
 async fn main() -> Result<(), slint::PlatformError> {

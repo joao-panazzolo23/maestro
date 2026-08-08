@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
-use crate::structs::chat_message::ChatMessage;
+use crate::domain::chats::dtos::chat_message::ChatMessage;
 
 #[derive(Debug, Serialize)]
 pub struct ChatRequest {

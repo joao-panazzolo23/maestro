@@ -1,6 +1,6 @@
 use serde::de::DeserializeOwned;
 
-use crate::domain::chat_request::ChatRequest;
+use crate::domain::chats::dtos::chat_request::ChatRequest;
 
 //TODO: this needs to be dynamically set when configuring LLM definition
 #[derive(Debug, Clone)]
