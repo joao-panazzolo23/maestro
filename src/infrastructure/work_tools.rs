@@ -12,6 +12,7 @@ pub struct WorkTools {
 
 ///TODO: i dont think thats a real deal when it comes to decoupling. structs still being concrete implementations,
 /// maybe using its own "interface" as a trait within domain layer and implementing at infrastructure level
+/// TODO: remove that shit from my project
 impl WorkTools {
     pub fn new(base_url: impl Into<String>, model: impl Into<String>) -> WorkTools {
         return WorkTools {

@@ -2,6 +2,8 @@ pub mod application;
 pub mod domain;
 pub mod infrastructure;
 pub mod presentation;
+pub mod schema;
+
 use crate::{
     domain::chats::dtos::{
         chat_message::ChatMessage, chat_request::ChatRequest, chat_response::ChatResponse,
