@@ -1,9 +1,16 @@
-use crate::domain::behaviors::{
-    entities::behavior::Behavior,
-    repositories::behavior_repository::{BehaviorRepository, RepositoryError},
+use diesel_async::pooled_connection::deadpool::Pool;
+
+use crate::{
+    domain::behaviors::{
+        entities::behavior::Behavior,
+        repositories::behavior_repository::{BehaviorRepository, RepositoryError},
+    },
+    infrastructure::async_sqlite_conn::AsyncSqliteConnection,
 };
 
-pub struct DieselBehaviorRepository {}
+pub struct DieselBehaviorRepository {
+    pool: Pool<AsyncSqliteConnection>,
+}
 
 impl BehaviorRepository for DieselBehaviorRepository {
     #[allow(
